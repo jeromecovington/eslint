@@ -8,12 +8,12 @@ This rule can enforce the use of braces around arrow function body.
 
 ## Options
 
-The rule takes one option, a string, which can be:
+The rule takes one or two options. The first is a string, which can be:
 
 * `"always"` enforces braces around the function body
 * `"as-needed"` enforces no braces where they can be omitted (default)
 
-### "always"
+The second one is an object for more fine-grained configuration when the first option is `"as-needed"`. Currently, the only available option is `enforceObjectLiteralBody`, a boolean property. It's `true` by default. If set to false, it requires braces and an explicit return for object literals.
 
 ```json
 "arrow-body-style": ["error", "always"]
@@ -83,4 +83,26 @@ let foo = () => { /* do nothing */ };
 let foo = () => {
     // do nothing.
 };
+let foo = () => ({ bar: 0 });
+```
+
+#### enforceObjectLiteralBody
+
+When the rule is set to `"as-needed", { enforceObjectLiteralBody: false }` the following patterns are considered problems:
+
+```js
+/*eslint arrow-body-style: ["error", "as-needed", { enforceObjectLiteralBody: false }]*/
+/*eslint-env es6*/
+let foo = () => ({});
+let foo = () => ({ bar: 0 });
+```
+
+The following patterns are not considered problems:
+
+```js
+/*eslint arrow-body-style: ["error", "as-needed", { enforceObjectLiteralBody: false }]*/
+/*eslint-env es6*/
+
+let foo = () => {};
+let foo = () => { return { bar: 0 }; };
 ```
